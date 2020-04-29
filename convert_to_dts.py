@@ -10,23 +10,18 @@ for binary_file in glob.glob("./*.bin"):
         fo.write('/dts-v1/;\n\n')
 
         fo.write('&fman0 {\n')
-        fo.write('\tfirmware {\n')
+        fo.write('\tfman_firmware: fman-firmware {\n')
 
         fo.write('\t\tcompatible = "fsl,fman-firmware";\n')
-        fo.write('\t\tfsl,firmware = <\n\t\t\t')
+        fo.write('\t\tfsl,firmware = [')
 
-        byte_cnt = 1
         with open(binary_file, "rb") as fi:
             byte = fi.read(1)
+            fo.write(f"{int.from_bytes(byte, byteorder='big'):02x}")
             while byte != b"":
-                fo.write(f"0x{int.from_bytes(byte, byteorder='big'):02x}")
-                if (byte_cnt % 8) == 0:
-                    fo.write('\n\t\t\t')
-                else:
-                    fo.write(' ')
                 byte = fi.read(1)
-                byte_cnt += 1
+                fo.write(f" {int.from_bytes(byte, byteorder='big'):02x}")
 
-        fo.write('\n\t\t>;\n')
+        fo.write('];\n')
         fo.write('\t};\n')
         fo.write('};\n')
