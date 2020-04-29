@@ -28,5 +28,5 @@ for binary_file in glob.glob("./*.bin"):
                 byte_cnt += 1
 
         fo.write('\n\t\t>;\n')
-        fo.write('\t}\n')
-        fo.write('}\n')
+        fo.write('\t};\n')
+        fo.write('};\n')
